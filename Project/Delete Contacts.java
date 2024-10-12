@@ -1,28 +1,34 @@
+ // Function to delete a contact by name
+    public String deleteContact(String contactName) {
+        ContactNode current = head; // Start from the head
+        ContactNode previous = null; // To keep track of the previous node
 
-        // Delete a contact by name - O(n)
-        public boolean deleteContact(String name) {
-            if (head == null) return false; // Empty phonebook
-
-            // Check if the head needs to be deleted
-            if (head.contact.name.equalsIgnoreCase(name)) {
-                head = head.next; // Move head to the next node
-                size--;
-                return true;
+        // Traverse the linked list to find the contact
+        while (current != null) {
+            if (current.name.equalsIgnoreCase(contactName)) { // Check if the current contact matches
+                if (previous == null) {
+                    head = current.next; // Update head if deleting the first contact
+                } else {
+                    previous.next = current.next; // Bypass the current node
+                }
+                return "Contact deleted successfully."; // Return success message
             }
+            previous = current; // Move previous to current
+            current = current.next; // Move to the next contact
+        }
+        return "Contact not found."; // Return not found message if contact doesn't exist
+    }
 
-            Node current = head;
-            Node prev = null; // Previous node reference
-            // Search for the contact to delete
-            while (current != null && !current.contact.name.equalsIgnoreCase(name)) {
-                prev = current;
-                current = current.next;
-            }
 
-            // If contact was not found
-            if (current == null) return false;
 
-            // Update previous node to skip over the deleted node
-            prev.next = current.next;
-            size--;
-            return true;
+
+
+             case 4:
+                    System.out.print("Enter the name of the contact you want to delete: ");
+                    String deleteName = scanner.nextLine(); // Get name to delete
+                    String result = myContacts.deleteContact(deleteName); // Delete contact
+                    System.out.println(result); // Display result
+
+
+
         }
