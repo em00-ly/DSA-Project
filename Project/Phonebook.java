@@ -122,7 +122,7 @@ class ContactList {
 }
 
 // Main class for the Phonebook application
-public class PhonebookApp {
+ class PhonebookApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in); // Create a scanner for user input
         ContactList myContacts = new ContactList(); // Create a new contact list
