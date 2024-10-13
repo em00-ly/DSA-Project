@@ -17,3 +17,11 @@
 case 5:
                     System.out.print("Enter the name of the contact you want to update: ");
                     String updateName = scanner.nextLine(); // Name of contact to update
+
+ // Fetch the current contact details to keep them if no new info is provided
+                    String currentPhoneNumber = myContacts.searchContact(updateName);
+                    if (currentPhoneNumber == null) {
+                        System.out.println("Contact not found.");
+                        break;
+
+                    }                        
