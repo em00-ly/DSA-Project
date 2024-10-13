@@ -1,4 +1,6 @@
-import java.util.Scanner; // Importing Scanner for user input via the console
+import java.util.Scanner; // Importing the Scanner class to read input from the user 
+import java.util.ArrayList;  // Importing the ArrayList class and List interface from the java.util package  
+import java.util.List;  
 
 // Define the structure for a contact as a linked list node
 class ContactNode {
