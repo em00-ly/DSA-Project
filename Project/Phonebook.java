@@ -2,6 +2,7 @@ import java.util.Scanner; // Importing the Scanner class to read input from the 
 import java.util.ArrayList;  // Importing the ArrayList class and List interface from the java.util package  
 import java.util.List;  
 
+
 // Define the structure for a contact as a linked list node
 class ContactNode {
     String name; // Contact's name
@@ -24,30 +25,33 @@ class ContactList {
     public ContactList() {
         head = null; // Initially, the list is empty
     }
-     // insert contact 
+
+    // Function to add a contact to the linked list
     public void insertContact(String name, String phoneNumber) {
-        ContactNode newContact = new ContactNode(name, phoneNumber); 
-        newContact.next = head; 
-        head = newContact; 
+        ContactNode newContact = new ContactNode(name, phoneNumber); // Create a new contact node
+        newContact.next = head; // Point new contact to the current head
+        head = newContact; // Update head to the new contact
+        sortPhoneBook();
     }
 
     // Function to delete a contact by name
     public String deleteContact(String contactName) {
-        ContactNode current = head; // Start from the head
+        ContactNode temp = head; // Start from the head
         ContactNode previous = null; // To keep track of the previous node
 
+
         // Traverse the linked list to find the contact
-        while (current != null) {
-            if (current.name.equalsIgnoreCase(contactName)) { // Check if the current contact matches
+        while (temp != null) {
+            if (temp.name.equals(contactName)) { // Check if the current contact matches
                 if (previous == null) {
-                    head = current.next; // Update head if deleting the first contact
+                    head = head.next; // Update head if deleting the first contact
                 } else {
-                    previous.next = current.next; // Bypass the current node
+                    previous.next = temp.next; // Bypass the current node
                 }
                 return "Contact deleted successfully."; // Return success message
             }
-            previous = current; // Move previous to current
-            current = current.next; // Move to the next contact
+            previous = temp; // Move previous to current
+            temp = temp.next; // Move to the next contact
         }
         return "Contact not found."; // Return not found message if contact doesn't exist
     }
@@ -68,12 +72,12 @@ class ContactList {
 
     // Function to search for a contact by name
     public String searchContact(String name) {
-        ContactNode current = head; // Start from the head
-        while (current != null) {
-            if (current.name.equalsIgnoreCase(name)) { // Check for a match
-                return current.phoneNumber; // Return phone number if found
+        ContactNode temp = head; // Start from the head
+        while (temp != null) {
+            if (temp.name.equals(name)) { // Check for a match
+                return temp.phoneNumber; // Return phone number if found
             }
-            current = current.next; // Move to the next contact
+            temp = temp.next; // Move to the next contact
         }
         return null; // Return null if not found
     }
@@ -83,47 +87,44 @@ class ContactList {
         if (head == null || head.next == null) {
             return; // No need to sort if the list is empty or has only one contact
         }
-
-        boolean swapped; // Flag to check if a swap occurred
-        do {
-            ContactNode current = head; // Start from the head
-            swapped = false; // Reset swapped flag
+        else {
+            ContactNode temp = head; // Start from the head
 
             // Traverse the list and swap contacts if needed
-            while (current != null && current.next != null) {
+            while (temp != null && temp.next != null) {
                 // Compare names and swap if needed
-                if (current.name.compareToIgnoreCase(current.next.name) > 0) {
+                if (temp.name.compareTo(temp.next.name) > 0) {
                     // Swap names and phone numbers
-                    String tempName = current.name;
-                    String tempPhoneNumber = current.phoneNumber;
-                    current.name = current.next.name;
-                    current.phoneNumber = current.next.phoneNumber;
-                    current.next.name = tempName;
-                    current.next.phoneNumber = tempPhoneNumber;
-                    swapped = true; // Set swapped flag to true
+                    String tempName = temp.name;
+                    String tempPhoneNumber = temp.phoneNumber;
+                    temp.name = temp.next.name;
+                    temp.phoneNumber = temp.next.phoneNumber;
+                    temp.next.name = tempName;
+                    temp.next.phoneNumber = tempPhoneNumber;
                 }
-                current = current.next; // Move to the next contact
+                temp = temp.next; // Move to the next contact
             }
-        } while (swapped); // Continue sorting until no swaps are needed
+        }
     }
 
     // Function to update a contact's phone number
     public String updateContact(String name, String newPhoneNumber , String newName) {
-        ContactNode current = head; // Start from the head
-        while (current != null) {
-            if (current.name.equalsIgnoreCase(name)) { // Check for a match
-                current.name = newName;
-                current.phoneNumber = newPhoneNumber; // Update the phone number
+        ContactNode temp = head; // Start from the head
+        while (temp != null) {
+            if (temp.name.equals(name)) { // Check for a match
+                temp.name = newName;
+                temp.phoneNumber = newPhoneNumber; // Update the phone number
+                sortPhoneBook();
                 return "Contact updated successfully."; // Return success message
             }
-            current = current.next; // Move to the next contact
+            temp = temp.next; // Move to the next contact
         }
         return "Contact not found."; // Return not found message if contact doesn't exist
     }
 }
 
 // Main class for the Phonebook application
- class PhonebookApp {
+class PhonebookApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in); // Create a scanner for user input
         ContactList myContacts = new ContactList(); // Create a new contact list
@@ -142,8 +143,7 @@ class ContactList {
             System.out.println("3. Insert Contact");
             System.out.println("4. Delete Contact");
             System.out.println("5. Update Contact");
-            System.out.println("6. Sort Contacts");
-            System.out.println("7. Exit");
+            System.out.println("6. Exit");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt(); // Get user choice
             scanner.nextLine(); // Consume newline
@@ -169,6 +169,7 @@ class ContactList {
                     String newPhoneNumber = scanner.nextLine(); // Get new contact phone number
                     myContacts.insertContact(newName, newPhoneNumber); // Add new contact
                     System.out.println("Contact added successfully."); // Display success message
+                    myContacts.sortPhoneBook(); // Sort contacts
                     break;
                 case 4:
                     System.out.print("Enter the name of the contact you want to delete: ");
@@ -208,10 +209,6 @@ class ContactList {
                     break;
 
                 case 6:
-                    myContacts.sortPhoneBook(); // Sort contacts
-                    System.out.println("Contacts sorted successfully."); // Display success message
-                    break;
-                case 7:
                     System.out.println("Exiting the program."); // Exit message
                     scanner.close(); // Close scanner
                     System.exit(0); // Exit program
@@ -222,4 +219,3 @@ class ContactList {
         }
     }
 }
-
